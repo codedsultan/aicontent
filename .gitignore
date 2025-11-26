@@ -58,4 +58,3 @@ config/local_*
 
 # 🔥 Ignore everything copied for Docker
 docker-compose.yml
-

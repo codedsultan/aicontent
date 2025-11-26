@@ -1,8 +1,8 @@
-import yaml
-from pathlib import Path
 from functools import lru_cache
+from pathlib import Path
 from typing import Any, Dict
 
+import yaml
 
 # =========
 # File paths
@@ -28,6 +28,7 @@ def load_yaml(path: Path) -> Dict[str, Any]:
 # Cached config getters (fast)
 # ==============================
 
+
 @lru_cache(maxsize=1)
 def get_model_config() -> Dict[str, Any]:
     """
@@ -49,6 +50,7 @@ def get_prompt_templates() -> Dict[str, Any]:
 # ==============================
 # Helper API Functions
 # ==============================
+
 
 def get_default_provider() -> str:
     """

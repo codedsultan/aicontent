@@ -6,7 +6,9 @@ import yaml
 from loguru import logger
 
 # Path to logging_config.yaml
-CONFIG_PATH = Path(__file__).resolve().parent.parent.parent / "config" / "logging_config.yaml"
+CONFIG_PATH = (
+    Path(__file__).resolve().parent.parent.parent / "config" / "logging_config.yaml"
+)
 
 
 class InterceptHandler(logging.Handler):
@@ -29,7 +31,9 @@ def load_logging_config():
     Load YAML logging configuration from config/logging_config.yaml.
     """
     if not CONFIG_PATH.exists():
-        logger.warning(f"Logging config not found at {CONFIG_PATH}, using default console logger.")
+        logger.warning(
+            f"Logging config not found at {CONFIG_PATH}, using default console logger."
+        )
         return None
 
     with open(CONFIG_PATH, "r") as f:
