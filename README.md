@@ -1,288 +1,297 @@
-Absolutely — here is a **clean, modern, developer-friendly README** that documents:
+Absolutely — here is an updated **professional, production-grade README.md** tailored to your project, including:
 
-* Folder structure
-* Requirements
-* Docker setup
-* Dev workflow
-* CI/CD workflows
-* How to run tests
-* How to extend the project
-
-This README is tailored **specifically for your starter architecture** and reflects everything you've built so far.
+✔ Updated folder structure
+✔ Explanation of new dependencies
+✔ Dev workflow (pre-commit, formatting, tests)
+✔ Docker + CI/CD explanations
+✔ API + worker architecture
+✔ Running locally and in production
 
 ---
 
-# 🚀 **AICONTENT — Modular AI Content Service Starter**
+# ⭐ **AICONTENT – Modular FastAPI AI Service Starter**
 
-AICONTENT is a production-ready starter template for building modular AI-powered microservices using **FastAPI**, **Celery**, **Redis**, **Docker**, and **GitHub Actions CI/CD**.
-It is designed to scale across content generation, SEO analysis, image suggestions, calibration, and LLM provider abstraction.
+A fully structured, production-ready FastAPI + Celery microservice template for AI-powered workloads.
+This project provides a scalable foundation for LLM content generation, background processing, SEO analysis, image suggestion, and calibration pipelines.
 
-This starter is ideal for:
-
-* AI content generation platforms
-* Multi-module API services
-* LLM orchestration systems
-* Developer teams needing clean architecture & CI/CD from day one
+Designed for **containerized deployments**, **GitHub Actions**, and **Ansible orchestration**.
 
 ---
 
-# 📁 **Project Structure**
+# 📌 **Features**
+
+* **FastAPI** application boilerplate with modular architecture
+* **Celery Worker** for async/long-running tasks
+* **Redis** as broker/cache
+* **Pydantic v2** + `pydantic-settings` for clean environment handling
+* **Structured Logging with Loguru**
+* **Ruff + Black + isort + Pre-commit** enforcing code quality
+* **Dockerized API + Worker images**
+* **GitHub Actions CI/CD** with GHCR deployment
+* Built-in folder structure for:
+
+  * LLM providers
+  * Content generation modules
+  * SEO tools
+  * Image suggestion
+  * Calibration + personalization
+  * Shared utilities
+  * Prompt versioning and testing
+
+---
+
+# 📂 **Project Structure**
 
 ```
 aicontent/
-│
-├── config/                     # Configuration layer
-│   ├── settings.py
+├── config/                     # App configuration
+│   ├── settings.py             # Pydantic v2 Settings
 │   ├── model_config.yaml
 │   ├── prompt_templates.yaml
 │   └── logging_config.yaml
 │
-├── src/                        # Application source code
-│   ├── main.py                 # FastAPI entrypoint
-│   ├── celery_app.py           # Celery configuration
-│   ├── database.py
-│   ├── dependencies.py
-│   │
-│   ├── llm/                    # LLM Provider Abstraction Layer
-│   │   ├── base.py
-│   │   ├── factory.py
-│   │   ├── openai_client.py
-│   │   ├── anthropic_client.py
-│   │   └── ollama_client.py
-│   │
-│   ├── content/                # Content Generation Module
-│   │   ├── router.py
-│   │   ├── schemas.py
-│   │   ├── tasks.py
-│   │   ├── services/
-│   │   ├── prompt_engineering/
-│   │   └── processors/
-│   │
-│   ├── calibration/            # Tone, style & user-personalization
+├── src/                        # Source code
+│   ├── main.py                 # FastAPI entry
+│   ├── celery_app.py           # Celery config
+│   ├── llm/                    # LLM provider abstraction
+│   ├── content/                # Content generation routes + services
 │   ├── images/                 # Image suggestion module
-│   ├── seo/                    # SEO analysis module
-│   ├── utils/                  # Shared utilities
-│   └── handlers/               # Error & event handlers
-│
-├── data/                       # Versioned prompts, cached outputs
-│
-├── examples/                   # Python usage examples
-│
-├── notebooks/                  # Experimentation & testing
-│
-├── tests/                      # Full pytest suite
+│   ├── seo/                    # SEO analysis tools
+│   ├── calibration/            # Tone/style matching module
+│   ├── utils/                  # Logging, rate limiting, config loader
+│   └── handlers/               # Global error handlers
 │
 ├── docker/
-│   ├── Dockerfile.api          # Builds API image
-│   ├── Dockerfile.worker       # Builds Celery worker image
+│   ├── Dockerfile.api          # API image
+│   ├── Dockerfile.worker       # Celery worker image
+│   └── docker-compose.yml      # Dev environment
 │
-├── docker-compose.yml          # Local development stack
+├── tests/                      # Pytest test suite
 │
-├── requirements.txt            # Core production dependencies
-├── requirements-dev.txt        # Dev & tooling dependencies
+├── scripts/                    # Utility scripts
 │
-├── .gitignore
-├── .dockerignore
-├── CHANGELOG.md
-└── README.md                   # You're reading this
+├── .github/workflows/          # CI/CD pipelines
+│
+├── requirements.txt
+├── requirements-dev.txt
+├── README.md
+└── CHANGELOG.md
 ```
 
 ---
 
-# 🔧 **Dependencies**
+# ⚙️ **Installed Packages & Why**
 
-## 📌 **Production dependencies (`requirements.txt`)**
+### 🔵 **FastAPI**
 
-Includes:
+Modern async API framework for performance and developer experience.
 
-* **FastAPI** (API framework)
-* **Uvicorn** (ASGI server)
-* **Pydantic / Pydantic-Settings**
-* **Celery** (async tasks)
-* **Redis** (broker/backend)
-* **PyYAML** (config loader)
-* **httpx + requests**
-* **pytest** (minimal testing dependencies)
-* **loguru** (logging)
+### 🔵 **Uvicorn + uvloop**
 
-This is enough to run the entire stack: API + worker + Redis.
+High-performance async server with event loop acceleration.
+
+### 🔵 **Pydantic v2**
+
+Used for data validation & modeling.
+
+### 🔵 **pydantic-settings**
+
+Pydantic v2 moved `BaseSettings` into this separate package.
+Used for loading environment variables from `.env`.
+
+### 🔵 **python-dotenv**
+
+Enables `.env` support outside Pydantic if needed.
+
+### 🔵 **PyYAML**
+
+Loads YAML prompt templates, model configs, and other structured configs.
+
+### 🔵 **Celery**
+
+Handles long-running async tasks (content generation, SEO processing, etc).
+
+### 🔵 **Redis**
+
+Message broker + optional caching layer.
+
+### 🔵 **httpx + requests**
+
+For async/sync HTTP calls to LLM APIs and partner services.
+
+### 🔵 **loguru**
+
+Modern structured logging with better formatting and lower overhead than Python stdlib logging.
+
+### 🔵 **python-multipart**
+
+Required by FastAPI for file uploads.
+
+### 🔵 **orjson**
+
+Ultra-fast JSON parser used internally by FastAPI when available.
+
+### 🧪 **pytest + pytest-asyncio**
+
+Included for robust unit + async testing.
 
 ---
 
-## 📌 **Development dependencies (`requirements-dev.txt`)**
+# 🚀 **Getting Started (Local Development)**
 
-Includes:
-
-* Black (formatter)
-* Ruff (linter)
-* isort (import sorter)
-* mypy (type checking)
-* pytest-cov
-* flake8 (optional linting)
-* bandit & safety (security scanning)
-* pre-commit hooks
-
-These tools give you:
-
-* Clean code
-* Consistent formatting
-* Fast CI checking
-* Safe and typed Python
-* High-quality development workflow
-
----
-
-# 🐳 **Docker Setup**
-
-The project includes:
-
-### **API Dockerfile**
-
-Located in `docker/Dockerfile.api`
-Builds a lightweight FastAPI production image.
-
-### **Worker Dockerfile**
-
-Located in `docker/Dockerfile.worker`
-Runs Celery workers for async tasks.
-
-### **docker-compose.yml**
-
-Supports:
-
-* API
-* Worker
-* Redis
-
-Start everything:
+### 1. Install dependencies
 
 ```bash
-docker-compose up --build
+pip install -r requirements.txt
+pip install -r requirements-dev.txt
 ```
 
-API available at:
-
-```
-http://localhost:8000
-```
-
----
-
-# 🚦 **Running the Project (Dev Mode)**
-
-Run API locally:
+### 2. Run API locally
 
 ```bash
 uvicorn src.main:app --reload
 ```
 
-Run worker locally:
+### 3. Start Celery worker
 
 ```bash
-celery -A src.celery_app.celery worker --loglevel=INFO
+celery -A src.celery_app worker --loglevel=INFO
 ```
 
----
-
-# 🧪 **Running Tests**
-
-All tests are inside `tests/`.
-
-Run entire test suite:
+### 4. Run tests
 
 ```bash
 pytest -q
 ```
 
-Run with coverage:
+---
+
+# 🐳 **Docker Usage**
+
+### Build API
 
 ```bash
-pytest --cov=src
+docker build -t aicontent-api -f docker/Dockerfile.api .
+```
+
+### Build Worker
+
+```bash
+docker build -t aicontent-worker -f docker/Dockerfile.worker .
+```
+
+### Run with Docker Compose
+
+```bash
+docker compose up --build
 ```
 
 ---
 
-# 🚀 **CI/CD Workflows (GitHub Actions)**
+# 🔄 **CI/CD (GitHub Actions + GHCR)**
 
-This starter includes three workflows:
+This repo ships with:
 
-### 1️⃣ **Build & Push (build.yml)**
+### ✔ Build API Image
 
-* Builds Docker images
-* Tags using metadata
-* Pushes to GitHub Container Registry
+### ✔ Build Worker Image
 
-### 2️⃣ **Test (test.yml)**
+### ✔ Push to GitHub Container Registry
 
-Runs:
+### ✔ Automated Tests
 
-* ruff
-* black
-* mypy
-* pytest
-* coverage
+### ✔ Automated Formatting + Linting
 
-### 3️⃣ **Deploy (deploy.yml)**
+### ✔ Deploy with Ansible
 
-Deploys to a VPS via SSH using docker-compose.
+The workflow files are located in:
 
-Secrets required:
-
-* `VPS_HOST`
-* `VPS_USER`
-* `VPS_SSH_KEY`
+```
+.github/workflows/
+├── build.yml
+├── test.yml
+└── deploy.yml
+```
 
 ---
 
-# 🧱 **Development Workflow**
+# 🔎 **Pre-commit Hooks (Code Quality Automation)**
 
-Here’s the recommended workflow:
+Installed hooks:
 
-### ✔ Step 1 — Write code inside `src/`
+* **Black** – Auto-formatting
+* **Ruff** – Lint + autofix
+* **Isort** – Import sorting
+* **Trailing whitespace fixer**
+* **EOF fixer**
+* **YAML/JSON validators**
 
-Each module is isolated for clarity (content, SEO, images, etc.).
-
-### ✔ Step 2 — Add tests in `tests/`
-
-Everything should be tested.
-
-### ✔ Step 3 — Format code
-
-```bash
-black .
-ruff check .
-mypy src
-```
-
-### ✔ Step 4 — Run docker build
+Install locally:
 
 ```bash
-docker-compose up --build
+pre-commit install
+pre-commit run --all-files
 ```
-
-### ✔ Step 5 — Push changes
-
-Triggers GitHub Actions:
-
-* Lint
-* Test
-* Build
-* Deploy (main branch)
 
 ---
 
-# 🧩 **Extending the Project**
+# 🌐 **Production Deployment**
 
-To add a new module:
+This project is designed to be deployed with:
 
-1. Create folder under `src/newmodule`
-2. Add:
+* **Docker images from GHCR**
+* **Ansible deployment automation**
+* **Caddy reverse proxy configuration**
 
-   * `router.py`
-   * `schemas.py`
-   * `services/`
-   * `tasks.py` (if using Celery)
-3. Register router in `src/main.py`
-4. Add tests in `tests/newmodule/`
+API and Worker run as independent containers for scalability.
 
-The architecture is fully modular.
+---
+
+# 🧠 **Environment Configuration**
+
+Environment variables are loaded automatically from `.env`:
+
+```
+APP_NAME=Starter AI Service
+LOG_LEVEL=info
+REDIS_URL=redis://redis:6379/0
+OPENAI_API_KEY=...
+```
+
+Using the Pydantic Settings system:
+
+```python
+from pydantic_settings import BaseSettings
+
+class Settings(BaseSettings):
+    APP_NAME: str
+    LOG_LEVEL: str
+
+    model_config = {
+        "env_file": ".env",
+        "env_file_encoding": "utf-8"
+    }
+```
+
+---
+
+# 📝 **Future Enhancements**
+
+* Automatic prompt versioning
+* Background job scheduler container
+* WebSocket support
+* OpenTelemetry tracing
+* API gateway integration
+
+---
+
+# 🎉 **Summary**
+
+You now have a **clean, modular, production-ready AI microservice**, complete with:
+
+* API + Worker separation
+* Full dockerization
+* Automated testing
+* Automated formatting & linting
+* CI/CD + deployment
+* Extensible architecture for LLMs, SEO, image tools, prompts, and more
